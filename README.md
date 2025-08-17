@@ -3,7 +3,7 @@
 ## Overview
 This repository contains the semester-long project for **CSE304 – Compiler Design**.  
 The project walks step by step through the construction of a simple compiler, starting from the **lexical analyzer** and ending with a working **compiler** that ties all phases together.  
-Each folder contains, Dockerfile, which enables users to test and run the program without the need to install any applications. There is a guide **dockerStart.txt** which gives 
+Each folder contains Dockerfile, which enables users to test and run the program without the need to install any applications. There is a guide **dockerStart.txt** which gives 
 sufficient information to run the program
 
 The purpose of this project is to gain hands-on experience in the design and implementation of compiler components and to understand how source code is transformed into executable code.
