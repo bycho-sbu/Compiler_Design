@@ -1,0 +1,25 @@
+docker guide
+
+make <project folder>
+
+make dockerfile (dependencies and run etc.)
+
+make src files
+
+image build
+
+navigate to src folder terminal
+docker build -t <project folder> .
+ex) docker build -t lexical-analyzer .
+initiates the build process, tags the image with the name "lexical-analyzer"
+
+container start
+
+after the image is built, start the container with 
+in the image tab select the project and run as a container(specify port)
+docker run -it lexical-analyzer 
+
+docker run -it lexical-analyzer /bin/bash
+start a container with an interactive shell 
+
+sample) root@2f20429886a4:/app# python3 main.py test.rsc

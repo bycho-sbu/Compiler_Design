@@ -1,0 +1,160 @@
+TERMINALS
+
+SEMICOLON==>";"
+LBRACE==>"{" 
+RBRACE==>"}"
+COMMA==>","
+INT==>"int"
+FLOAT==>"float"
+VOID==>"void"
+ID==>"[a-zA-Z][a-zA-Z0-9]*"
+FUNCTION==>"function"
+ICONST==>"\d+"
+FCONST==>"\d+(.\d*)?"
+LBRACKET==>"["
+RBRACKET==>"]"
+PRINT==>"print"
+READ==>"read"
+ASSIGN==>"="
+LPAREN==>"("
+RPAREN==>")"
+MULT==>"*"
+DIV==>"/"
+PLUS==>"+"
+MINUS==>"-"
+WHILE==>"while"
+IF==>"if"
+ELSE==>"else"
+RETURN==>"return"
+CALL==>"call"
+NOT==>"!"
+AND==>"&&"
+OR==>"||"
+EQUAL==>"=="
+LT==>"<"
+LE==>"<="
+GT==>">"
+GE==>">="
+NOTEQUAL==>"!="
+MAIN=>"main"
+DD==>"$$"
+
+Start symbol is program
+
+Program => decllist funcdecls DD
+
+funcdecls => funcdecl funcdecls
+funcdecls => maindecl
+funcdecl => FUNCTION ftypespec simplevar fdeclparms LBRACE decllist statementlist RBRACE
+maindecl => MAIN LPAREN RPAREN LBRACE decllist statementlist RBRACE
+ftypespec => VOID | INT | FLOAT
+simplevar => ID x
+fdeclparms => LPAREN fparmlist RPAREN
+fparmlist => fparm fparmlistrem
+fparmlist => e
+fparm => typespec parmVar
+parmVar => ID parmVarTail										c
+parmVarTail => LBRACKET RBRACKET parmVarTail
+parmVarTail => e
+fparmlistrem => COMMA fparm fparmlistrem
+fparmlistrem => e
+
+decllist => decl decllist
+decllist => e
+bstatementlist => LBRACE statementlist RBRACE 
+statementlist => statement statementlisttail  
+statementlisttail => SEMICOLON statementlist 
+statementlisttail => e 
+
+decl => typespec variablelist
+
+variablelist => variable variablelisttail
+variablelisttail => COMMA variable variablelisttail
+variablelisttail => SEMICOLON
+variable => ID variabletail
+variabletail => LBRACKET ICONST RBRACKET variabletail
+variabletail => e
+
+typespec => INT 
+typespec => FLOAT
+
+usevariable => ID usevariabletail x 
+usevariabletail => arraydim  x 
+usevariabletail => e  x 
+
+arraydim => LBRACKET arraydimtail 
+arraydimtail => Iconst RBRACKET arraydim 
+arraydimtail => ID RBRACKET arraydim  
+arraydim => e  ?
+
+statement => whilestatement
+statement => ifstatement
+statement => assignmentstatement
+statement => printstatement
+statement => readstatement
+statement => returnstatement
+statement => callstatement
+
+basicexpr => basicterm basicexprtail  
+basicexprtail => PLUS basicterm basicexprtail 
+basicexprtail => MINUS basicterm basicexprtail  
+basicexprtail => e  
+basicterm => basicfactor basictermtail   
+basictermtail => MULT basicfactor basictermtail   
+basictermtail => DIV basicfactor basictermtail   
+basictermtail => e   
+
+basicfactor => ID   
+basicfactor => ICONST   
+
+assignmentstatement => usevariable ASSIGN otherexpression
+otherexpression => term otherexpressiontail   
+otherexpressiontail => PLUS term otherexpressiontail   
+otherexpressiontail => MINUS term otherexpressiontail    
+otherexpressiontail => e   
+term => factor termtail   
+termtail => MULT factor termtail   
+termtail => DIV factor termtail  
+termtail => e   
+
+
+factortail => usevariabletail   
+factortail => funccalltail      
+
+funccalltail => LPAREN arglist RPAREN   
+arglist => otherexpression arglistrem    
+arglist => e   
+arglistrem => COMMA otherexpression arglistrem    
+arglistrem => e   
+
+factor => ID factortail   
+factor => ICONST    
+factor => FCONST   
+factor => LPAREN otherexpression RPAREN   
+factor => MINUS factor  
+
+whilestatement => WHILE relationalexpr bstatementlist
+
+ifstatement => IF relationalexpr bstatementlist istail
+istail => ELSE bstatementlist
+istail => e
+relationalexpr => condexpr relationalexprtail
+relationalexprtail => AND condexpr
+relationalexprtail => OR condexpr
+relationalexprtail => e
+
+condexpr => LPAREN otherexpression condexprtail RPAREN
+condexpr => otherexpression condexprtail
+condexpr => NOT condexpr
+condexprtail => LT otherexpression
+condexprtail => LE otherexpression
+condexprtail => GT otherexpression
+condexprtail => GE otherexpression
+condexprtail => EQUAL otherexpression
+printstatement => PRINT otherexpression
+readstatement => READ usevariable
+returnstatement => RETURN otherexpression
+returnstatement => RETURN
+callstatement => CALL ID funccalltail
+
+
